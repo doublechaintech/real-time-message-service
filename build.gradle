@@ -9,6 +9,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.quarkus:quarkus-resteasy-reactive-jackson'
+    implementation 'io.quarkus:quarkus-rest-client-reactive-jackson'
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-websockets'
     implementation 'io.quarkus:quarkus-arc'
