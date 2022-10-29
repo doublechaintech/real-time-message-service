@@ -23,4 +23,4 @@ client.on('connect', function(connection) {
 });
 
 //client.connect('ws://192.168.1.9:9988/chat/x001', 'server time');
-client.connect('ws://192.168.1.9:9988/chat/x001');
+client.connect('ws://192.168.1.9:9988/message-center/x001');

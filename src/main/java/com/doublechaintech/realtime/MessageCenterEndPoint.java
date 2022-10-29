@@ -1,4 +1,7 @@
 package com.doublechaintech.realtime;
+import com.doublechiantech.service.ChannelService;
+import org.jboss.logging.Logger;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +14,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.Session;
-@ServerEndpoint("/chat/{username}")
+@ServerEndpoint("/message-center/{username}")
 @ApplicationScoped
 
 public class MessageCenterEndPoint {
@@ -27,7 +30,7 @@ public class MessageCenterEndPoint {
 
 
     Map<String, Session> sessions = new ConcurrentHashMap<>();
-
+    private static final Logger LOG = Logger.getLogger(ChannelService.class);
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) {
         sessions.put(username, session);
@@ -62,14 +65,14 @@ public class MessageCenterEndPoint {
         sessions.entrySet().stream()
                 .filter(entry->endPoints.contains(entry.getKey()))
                 .map(entry -> {
-                    System.out.println("sending message to "+ entry.getKey());
+                    LOG.info("sending message to "+ entry.getKey());
                     return entry;
                 })
                 .map(entry -> entry.getValue()).forEach(session -> {
 
                     session.getAsyncRemote().sendText(message.toString(), result ->  {
                         if (result.getException() != null) {
-                            System.out.println("Unable to send message: " + result.getException());
+                            LOG.error("Unable to send message: " + result.getException());
                         }
                     });
                 });
@@ -80,7 +83,7 @@ public class MessageCenterEndPoint {
 
             s.getAsyncRemote().sendText(message, result ->  {
                 if (result.getException() != null) {
-                    System.out.println("Unable to send message: " + result.getException());
+                    LOG.error("Unable to send message: " + result.getException());
                 }
             });
         });

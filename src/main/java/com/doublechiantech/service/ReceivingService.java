@@ -3,6 +3,7 @@ import com.doublechaintech.manage.Audience;
 import com.doublechaintech.manage.Channel;
 import com.doublechaintech.manage.ChannelManager;
 import com.doublechaintech.realtime.MessageCenterEndPoint;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,9 +12,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import java.util.List;
-@Path("/post")
+@Path("/message-center/post")
 @ApplicationScoped
 public class ReceivingService {
+    private static final Logger LOG = Logger.getLogger(ReceivingService.class);
     @Inject
     MessageCenterEndPoint messageCenterEndPoint;
 
@@ -23,7 +25,7 @@ public class ReceivingService {
     public MessagePostResponse postMessage(MessagePostRequest request) {
 
         if(messageCenterEndPoint==null){
-            System.out.println("container is not working.."+ messageCenterEndPoint);
+            LOG.error("container is not working.."+ messageCenterEndPoint);
             return new MessagePostResponse();
         }
 

@@ -8,12 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class ChannelManager {
 
 
-
+    private static final Logger LOG = Logger.getLogger(ChannelManager.class);
 
 
     Map<String, Channel> channelMap;
@@ -36,12 +37,12 @@ public class ChannelManager {
     }
     public Channel ensureChanel(String channelName){
         Channel channel=getChannelMap().get(channelName);
-        System.out.println("ensureChanel Channel"  + channelName);
+        //LOG.info("ensureChanel Channel"  + channelName);
         if(channel!=null){
-            System.out.println("exist Channel"  + channelName);
+            LOG.info("exist Channel"  + channelName);
             return channel;
         }
-        System.out.println("new Channel"  + channelName);
+        LOG.info("new Channel"  + channelName);
         Channel newChannel = new Channel();
         newChannel.setName(channelName);
         getChannelMap().put(channelName,newChannel);
