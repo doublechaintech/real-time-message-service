@@ -53,11 +53,11 @@ body {
             log.innerHTML="";
         }
     }
-    function handleClose(evt) {
+    function handleClose(reconnectFunc) {
         var item = document.createElement("div");
         item.innerHTML = "<b>Connection closed.</b>";
         appendLog(item);
-        setTimeout(setupWebSocket, 1000);
+        setTimeout(reconnectFunc, 1000);
     };
     function handleMessage(evt) {
         var messages = evt.data.split('\n');
@@ -69,7 +69,7 @@ body {
             appendLog(item);
         }
     };
-    
+
     function setupWebSocket(){
         if(!window.WebSocket){
             var item = document.createElement("div");
@@ -79,7 +79,7 @@ body {
         }
         var conn;
         conn = new WebSocket("wss://" + document.location.host + "/message-center/x001");
-        conn.onclose = handleClose
+        conn.onclose = handleClose(setupWebSocket)
         conn.onmessage = handleMessage
 
     }
