@@ -17,6 +17,14 @@ public class ChannelService {
 
     @PUT
     public AddChanelResponse addToChanel(AddToChannelRequest request) {
+
+        try{
+            checkAddChangelRequest(request);
+        }catch (IllegalArgumentException ex){
+            return AddChanelResponse.withMessage(ex.getMessage());
+        }
+
+
         if(channelManager==null){
             LOG.info("the container is not working for ChannelService");
             return new AddChanelResponse();
@@ -24,6 +32,20 @@ public class ChannelService {
         //ChannelManager channelManager = ChannelManager.inst();
         channelManager.listenToChannel(request.getChannelName(), Audience.withName(request.getEndpoint()));
         return new AddChanelResponse();
+    }
+
+    private void checkAddChangelRequest(AddToChannelRequest request) {
+        if(request==null){
+            throw new IllegalArgumentException("request is null");
+        }
+        if(request.getChannelName()==null){
+            throw new IllegalArgumentException("chanelName is null");
+        }
+        if(request.getEndpoint()==null){
+            throw new IllegalArgumentException("endpoint is null");
+        }
+
+
     }
 
 }

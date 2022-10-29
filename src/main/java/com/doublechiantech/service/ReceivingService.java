@@ -23,6 +23,14 @@ public class ReceivingService {
     ChannelManager channelManager;
     @PUT
     public MessagePostResponse postMessage(MessagePostRequest request) {
+        try{
+
+            checkMessagePostRequest(request);
+        }catch (IllegalArgumentException ex){
+            return MessagePostResponse.withMessage(ex.getMessage());
+        }
+
+
 
         if(messageCenterEndPoint==null){
             LOG.error("container is not working.."+ messageCenterEndPoint);
@@ -33,6 +41,20 @@ public class ReceivingService {
         LOG.error(channelManager.listSubscriptionText());
         messageCenterEndPoint.multicast(endPoints,request.getMessage());
         return new MessagePostResponse();
+    }
+
+    private void checkMessagePostRequest(MessagePostRequest request) {
+
+        if(request==null){
+            throw new IllegalArgumentException("request is null");
+        }
+        if(request.getChannelName()==null){
+            throw new IllegalArgumentException("chanelName is null");
+        }
+        if(request.getMessage()==null){
+            throw new IllegalArgumentException("message is null");
+        }
+
     }
 
 
