@@ -24,20 +24,15 @@ public class ReceivingService {
     @PUT
     public MessagePostResponse postMessage(MessagePostRequest request) {
         try{
-
             checkMessagePostRequest(request);
         }catch (IllegalArgumentException ex){
             LOG.error(ex.getMessage());
             return MessagePostResponse.withMessage(ex.getMessage());
         }
-
-
-
         if(messageCenterEndPoint==null){
             LOG.error("container is not working.."+ messageCenterEndPoint);
             return new MessagePostResponse();
         }
-
         List<String> endPoints = channelManager.getEndPointForChannel(request.getChannelName());
         LOG.error(channelManager.listSubscriptionText());
         messageCenterEndPoint.multicast(endPoints,request.getMessage());
