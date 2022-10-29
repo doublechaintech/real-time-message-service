@@ -1,95 +1,94 @@
 <html lang="en">
-<head>
-<title>WebSocket测试</title>
+  <head>
+    <title>WebSocket测试</title>
 
-<style type="text/css">
-html {
-    overflow: hidden;
-}
-body {
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    background: rgb(156, 156, 156);
-}
-#log {
-    background: white;
-    margin: 0;
-    padding: 0.5em 0.5em 0.5em 0.5em;
-    position: absolute;
-    top: 0.5em;
-    left: 0.5em;
-    right: 0.5em;
-    bottom: 5em;
-    overflow: auto;
-    font-size: 12px;
-   font-family: "Courier New", Courier, monospace;
-}
-#form {
-    padding: 0 0.5em 0 0.5em;
-    margin: 0;
-    position: absolute;
-    bottom: 1em;
-    left: 0px;
-    width: 100%;
-    overflow: hidden;
-}
-</style>
-</head>
-<body>
-<div id="log"></div>
+    <style type="text/css">
+      html {
+        overflow: hidden;
+      }
+      body {
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(156, 156, 156);
+      }
+      #log {
+        background: white;
+        margin: 0;
+        padding: 0.5em 0.5em 0.5em 0.5em;
+        position: absolute;
+        top: 0.5em;
+        left: 0.5em;
+        right: 0.5em;
+        bottom: 5em;
+        overflow: auto;
+        font-size: 12px;
+        font-family: "Courier New", Courier, monospace;
+      }
+      #form {
+        padding: 0 0.5em 0 0.5em;
+        margin: 0;
+        position: absolute;
+        bottom: 1em;
+        left: 0px;
+        width: 100%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="log"></div>
+  </body>
 
-</body>
-
-<script type="text/javascript">
+  <script type="text/javascript">
     var msg = document.getElementById("msg");
     var log = document.getElementById("log");
-    
-    function appendLog(item) {
-        var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
-        
+    var reconnectFunc = null;
+
+    function appendLog(htmlContent) {
+      var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+      if (doScroll) {
+        log.scrollTop = log.scrollHeight - log.clientHeight;
+      }
+      var item = document.createElement("div");
+      item.innerHTML = htmlContent;
+      log.appendChild(item);
     }
-    function handleClose(reconnectFunc) {
-        var item = document.createElement("div");
-        item.innerHTML = "<b>Connection closed.</b>";
-        appendLog(item);
-        setTimeout(reconnectFunc, 1000);
-    };
+    function handleClose() {
+      appendLog("<b>Connection closed.</b>");
+
+      if (!reconnectFunc) {
+        appendLog("<b>reconnectFunc is not here</b>");
+      }
+      item = document.createElement("div");
+      item.innerHTML = "<b>reconnect</b>";
+      appendLog(item);
+      setTimeout(reconnectFunc, 1000);
+    }
     function handleMessage(evt) {
-        var messages = evt.data.split('\n');
-        var filter = msg.value;
-        for (var i = 0; i < messages.length; i++) {
-                    
-            var item = document.createElement("div");
-            item.innerText = messages[i];
-            appendLog(item);
-        }
-    };
-
-    function setupWebSocket(){
-        if(!window.WebSocket){
-            var item = document.createElement("div");
-            item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
-            appendLog(item);
-            return;
-        }
-        var conn;
-        conn = new WebSocket("wss://" + document.location.host + "/message-center/x001");
-        conn.onclose = handleClose(setupWebSocket)
-        conn.onmessage = handleMessage
-
+      var messages = evt.data.split("\n");
+      for (var i = 0; i < messages.length; i++) {
+        appendLog(messages[i]);
+      }
     }
+
+    function setupWebSocket() {
+      if (!window.WebSocket) {
+        appendLog("<b>Your browser does not support WebSockets.</b>");
+        return;
+      }
+      var conn;
+      conn = new WebSocket(
+        "wss://" + document.location.host + "/message-center/x001"
+      );
+      conn.onclose = handleClose;
+      conn.onmessage = handleMessage;
+    }
+    reconnectFunc = setupWebSocket;
     window.onload = function () {
-        
-        setupWebSocket()
-    
-       
+      setupWebSocket();
     };
-    </script>
-
-
-
-
+  </script>
 </html>

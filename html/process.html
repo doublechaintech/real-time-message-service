@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts 实例 - 进度条</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+ 
+        // 指定图表的配置项和数据
+        option = {
+			backgroundColor:"#17326b",
+			grid:{
+				left:"10",
+				top:"160",
+				right:"0",
+				bottom:"10",
+				containLabel:true
+			},
+			xAxis: {
+				type: 'value',
+				splitLine:{show:false},
+				axisLabel:{show:false},
+				axisTick:{show:false},
+				axisLine:{show:false}
+			},
+			yAxis:[
+			   {
+					type: 'category',
+					axisTick:{show:false},
+					axisLine:{show:false},
+					axisLabel:{
+						color:"black",
+						fontSize:14,
+						textStyle: {
+							  color: '#fff'
+						}
+					},
+					data:["充装进度"],
+					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
+					 inverse:true
+				},
+				 {
+					type: 'category',
+					axisTick:{show:false},
+					axisLine:{show:false},
+					axisLabel:{
+						color:"black",
+						fontSize:14,
+						textStyle: {
+							  color: '#fff'
+						}
+					},
+					data:[100],
+					max:10, // 关键：设置y刻度最大值，相当于设置总体行高
+					inverse:true
+				}
+			],
+			series: [
+			  {
+				name:"条",
+				type:"bar",
+				barWidth:100,
+				data:[20],
+				barCategoryGap:40,
+				itemStyle:{
+					normal:{
+						barBorderRadius:0,
+						color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+						  offset: 0,
+						  color: '#22b6ed'
+						}, {
+						  offset: 1,
+						  color: '#3fE279'
+						}]),
+					}
+				},
+				zlevel:1
+
+			  },{
+				  name:"进度条背景",
+				  type:"bar",
+				  barGap:"-100%",
+				  barWidth:100,
+				  data:[100],
+				  color:"gray",
+				  itemStyle:{
+					  normal:{
+						  barBorderRadius:0
+					  }
+				  },
+			  }
+			]
+		};
+
+ 
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+</html>
