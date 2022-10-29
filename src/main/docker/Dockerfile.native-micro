@@ -14,7 +14,7 @@
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/real-time-message-service
+# docker run -i --rm -p 9988:9988 quarkus/real-time-message-service
 #
 ###
 FROM quay.io/quarkus/quarkus-micro-image:1.0
@@ -24,7 +24,7 @@ RUN chown 1001 /work \
     && chown 1001:root /work
 COPY --chown=1001:root build/*-runner /work/application
 
-EXPOSE 8080
+EXPOSE 9988
 USER 1001
 
 CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]

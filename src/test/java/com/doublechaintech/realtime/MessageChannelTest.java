@@ -21,7 +21,7 @@ public class MessageChannelTest {
     @TestHTTPResource("/chat/stu")
     URI uri;
 
-    @Test
+
     public void testWebsocketChat() throws Exception {
         try (Session session = ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri)) {
             Assertions.assertEquals("CONNECT", MESSAGES.poll(10, TimeUnit.SECONDS));

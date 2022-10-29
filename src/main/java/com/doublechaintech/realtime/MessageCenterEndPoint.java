@@ -1,4 +1,5 @@
 package com.doublechaintech.realtime;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,10 +11,21 @@ import javax.websocket.OnOpen;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import javax.websocket.Session;
-@ServerEndpoint("/message-center/{username}")
+@ServerEndpoint("/chat/{username}")
 @ApplicationScoped
 
-public class MessageChanel {
+public class MessageCenterEndPoint {
+    /*
+    static MessageCenterEndPoint messageCenterEndPoint;
+    public static synchronized  MessageCenterEndPoint inst(){
+        if(messageCenterEndPoint==null){
+            messageCenterEndPoint=new MessageCenterEndPoint();
+        }
+        return messageCenterEndPoint;
+
+    }*/
+
+
     Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @OnOpen
@@ -42,6 +54,25 @@ public class MessageChanel {
         } else {
             broadcast(">> " + username + ": " + message);
         }
+    }
+
+    public synchronized void  multicast(List<String> endPoints, Object message){
+
+
+        sessions.entrySet().stream()
+                .filter(entry->endPoints.contains(entry.getKey()))
+                .map(entry -> {
+                    System.out.println("sending message to "+ entry.getKey());
+                    return entry;
+                })
+                .map(entry -> entry.getValue()).forEach(session -> {
+
+                    session.getAsyncRemote().sendText(message.toString(), result ->  {
+                        if (result.getException() != null) {
+                            System.out.println("Unable to send message: " + result.getException());
+                        }
+                    });
+                });
     }
 
     private void broadcast(String message) {
