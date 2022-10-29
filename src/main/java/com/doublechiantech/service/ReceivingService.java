@@ -1,14 +1,11 @@
 package com.doublechiantech.service;
-import com.doublechaintech.manage.Audience;
-import com.doublechaintech.manage.Channel;
 import com.doublechaintech.manage.ChannelManager;
 import com.doublechaintech.realtime.MessageCenterEndPoint;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
+
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import java.util.List;
