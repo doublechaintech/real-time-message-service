@@ -21,6 +21,7 @@ public class ChannelService {
         try{
             checkAddChangelRequest(request);
         }catch (IllegalArgumentException ex){
+            LOG.error(ex.getMessage());
             return AddChanelResponse.withMessage(ex.getMessage());
         }
 

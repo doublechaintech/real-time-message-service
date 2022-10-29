@@ -27,6 +27,7 @@ public class ReceivingService {
 
             checkMessagePostRequest(request);
         }catch (IllegalArgumentException ex){
+            LOG.error(ex.getMessage());
             return MessagePostResponse.withMessage(ex.getMessage());
         }
 
