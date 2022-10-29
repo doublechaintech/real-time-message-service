@@ -49,9 +49,7 @@ body {
     
     function appendLog(item) {
         var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
-        if(presentCounter % 1000 ===0){
-            log.innerHTML="";
-        }
+        
     }
     function handleClose(reconnectFunc) {
         var item = document.createElement("div");
@@ -85,6 +83,7 @@ body {
     }
     window.onload = function () {
         
+        setupWebSocket()
     
        
     };
