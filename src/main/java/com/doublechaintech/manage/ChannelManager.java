@@ -12,7 +12,11 @@ import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class ChannelManager {
+    public static final String __BROADCAST_CHANNEL="_debug";
 
+    public static boolean isDebugChannel(String channelName){
+        return channelName.equalsIgnoreCase(__BROADCAST_CHANNEL);
+    }
 
     private static final Logger LOG = Logger.getLogger(ChannelManager.class);
 

@@ -32,6 +32,9 @@ public class ReceivingService {
         }
         List<String> endPoints = channelManager.getEndPointForChannel(request.getChannelName());
         LOG.error(channelManager.listSubscriptionText());
+        if(channelManager.isDebugChannel(request.getChannelName())){
+            messageCenterEndPoint.broadcast(request.getMessage());
+        }
         messageCenterEndPoint.multicast(endPoints,request.getMessage());
         return new MessagePostResponse();
     }

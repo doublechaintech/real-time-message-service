@@ -62,9 +62,8 @@
       if (!reconnectFunc) {
         appendLog("<b>reconnectFunc is not here</b>");
       }
-      item = document.createElement("div");
-      item.innerHTML = "<b>reconnect</b>";
-      appendLog(item);
+      
+      appendLog("<b>reconnect</b>");
       setTimeout(reconnectFunc, 1000);
     }
     function handleMessage(evt) {

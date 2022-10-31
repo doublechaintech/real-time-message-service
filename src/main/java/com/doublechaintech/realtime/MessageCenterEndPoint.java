@@ -78,7 +78,7 @@ public class MessageCenterEndPoint {
                 });
     }
 
-    private void broadcast(String message) {
+    public void broadcast(String message) {
         sessions.values().forEach(s -> {
 
             s.getAsyncRemote().sendText(message, result ->  {
