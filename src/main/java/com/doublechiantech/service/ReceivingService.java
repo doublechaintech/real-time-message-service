@@ -40,6 +40,7 @@ public class ReceivingService {
         return  MessagePostResponse.withMessage("sent to end points:" +String.join(", ", endPoints));
     }
 
+
     private void checkMessagePostRequest(MessagePostRequest request) {
 
         if(request==null){
