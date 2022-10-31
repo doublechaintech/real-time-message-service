@@ -34,9 +34,10 @@ public class ReceivingService {
         LOG.error(channelManager.listSubscriptionText());
         if(channelManager.isDebugChannel(request.getChannelName())){
             messageCenterEndPoint.broadcast(request.getMessage());
+            return  MessagePostResponse.withMessage("send to broad cast");
         }
         messageCenterEndPoint.multicast(endPoints,request.getMessage());
-        return new MessagePostResponse();
+        return  MessagePostResponse.withMessage("sent to end points:" +String.join(", ", endPoints));
     }
 
     private void checkMessagePostRequest(MessagePostRequest request) {
