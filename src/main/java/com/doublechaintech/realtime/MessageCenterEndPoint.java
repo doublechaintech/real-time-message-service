@@ -1,7 +1,9 @@
 package com.doublechaintech.realtime;
 import com.doublechiantech.service.ChannelService;
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.reactive.common.util.DateUtil;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +36,7 @@ public class MessageCenterEndPoint {
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) {
         sessions.put(username, session);
-        broadcast(username+" is here");
+        broadcast(username+" joined at " + DateUtil.formatDate(new Date(),"YYYY-MM-DD hh:mm:ss.SSS"));
     }
 
     @OnClose
