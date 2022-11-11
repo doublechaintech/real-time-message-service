@@ -22,17 +22,18 @@ public class ChannelService {
             checkAddChangelRequest(request);
         }catch (IllegalArgumentException ex){
             LOG.error(ex.getMessage());
-            return AddChanelResponse.withMessage(ex.getMessage());
+            return AddChanelResponse.withErrorMessage(ex.getMessage());
         }
 
 
         if(channelManager==null){
-            LOG.info("the container is not working for ChannelService");
-            return new AddChanelResponse();
+            String msg="the container is not working for ChannelService";
+            LOG.info(msg);
+            return AddChanelResponse.withErrorMessage(msg);
         }
         //ChannelManager channelManager = ChannelManager.inst();
         channelManager.listenToChannel(request.getChannelName(), Audience.withName(request.getEndpoint()));
-        return new AddChanelResponse();
+        return AddChanelResponse.withMessage("End point '"+request.getChannelName()+"' has been added to channel '"+request.getEndpoint()+"'.");
     }
 
     private void checkAddChangelRequest(AddToChannelRequest request) {
