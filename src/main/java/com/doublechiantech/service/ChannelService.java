@@ -42,8 +42,14 @@ public class ChannelService {
         if(request.getChannelName()==null){
             throw new IllegalArgumentException("chanelName is null");
         }
+        if(request.getChannelName().length()<1){
+            throw new IllegalArgumentException("chanelName should not be an empty string");
+        }
         if(request.getEndpoint()==null){
             throw new IllegalArgumentException("endpoint is null");
+        }
+        if(request.getEndpoint().length() < 1 ){
+            throw new IllegalArgumentException("endpoint should not be an empty string");
         }
 
 
