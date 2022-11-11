@@ -25,16 +25,16 @@ public class MessagePostRequest {
         this.message = message;
     }
 
-    public List<String> getSubscribes() {
-        if(subscribes==null){
-            subscribes = new ArrayList<>();
+    public List<String> getSubscribers() {
+        if(subscribers==null){
+            subscribers = new ArrayList<>();
         }
-        return subscribes;
+        return subscribers;
     }
 
-    public void setSubscribes(List<String> subscribes) {
-        this.subscribes = subscribes;
+    public void setSubscribers(List<String> subscribers) {
+        this.subscribers = subscribers;
     }
 
-    List<String> subscribes;
+    List<String> subscribers;
 }

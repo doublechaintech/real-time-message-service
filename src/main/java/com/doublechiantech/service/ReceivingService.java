@@ -31,9 +31,9 @@ public class ReceivingService {
             return new MessagePostResponse();
         }
 
-        if(!request.getSubscribes().isEmpty()){
-            messageCenterEndPoint.multicast(request.getSubscribes(),request.getMessage());
-            return  MessagePostResponse.withMessage("sent to end points:" +String.join(", ", endPoints));
+        if(!request.getSubscribers().isEmpty()){
+            messageCenterEndPoint.multicast(request.getSubscribers(),request.getMessage());
+            return  MessagePostResponse.withMessage("sent to end points:" +String.join(", ", request.getSubscribers()));
         }
 
 
