@@ -30,6 +30,13 @@ public class ReceivingService {
             LOG.error("container is not working.."+ messageCenterEndPoint);
             return new MessagePostResponse();
         }
+
+        if(!request.getSubscribes().isEmpty()){
+            messageCenterEndPoint.multicast(request.getSubscribes(),request.getMessage());
+            return  MessagePostResponse.withMessage("sent to end points:" +String.join(", ", endPoints));
+        }
+
+
         List<String> endPoints = channelManager.getEndPointForChannel(request.getChannelName());
         LOG.error(channelManager.listSubscriptionText());
         if(channelManager.isDebugChannel(request.getChannelName())){

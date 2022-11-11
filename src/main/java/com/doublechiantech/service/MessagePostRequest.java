@@ -1,8 +1,13 @@
 package com.doublechiantech.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MessagePostRequest {
     private String channelName;
     private String message;
+
+
 
     public String getChannelName() {
         return channelName;
@@ -19,4 +24,17 @@ public class MessagePostRequest {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public List<String> getSubscribes() {
+        if(subscribes==null){
+            subscribes = new ArrayList<>();
+        }
+        return subscribes;
+    }
+
+    public void setSubscribes(List<String> subscribes) {
+        this.subscribes = subscribes;
+    }
+
+    List<String> subscribes;
 }
