@@ -18,20 +18,37 @@ public class QKMain implements QuarkusApplication {
     @Override
     public int run(String... args) throws Exception {
         System.out.println("Hello World " +service );
+        new Thread(LogListener.withService(service)).start();
+        Quarkus.waitForExit();
+        //System.out.println("find the service: " +service );
+        return 0; //exit code
+    }
+
+}
+
+/*
+*
+*
+*
+package com.doublechain.command;
+
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.runtime.annotations.QuarkusMain;
+
+
+public class Main {
+
+    public static void main(String... args) {
+        System.out.println("Hello World");
 
         new Thread(){
-
+            int i=0;
             public  void run(){
-                int i=0;
                 while (true){
                     i++;
-                    //System.out.println("count at "+service);
+                    System.out.println("count at "+i);
                     try{
-                        MessagePostRequest r=new MessagePostRequest();
-                        r.setChannelName("_debug");
-                        r.setMessage("count to "+ i);
-                        service.postMessage(r);
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     }catch (Exception e){
 
                     }
@@ -40,9 +57,12 @@ public class QKMain implements QuarkusApplication {
 
             }
         }.start();
-        Quarkus.waitForExit();
-        //System.out.println("find the service: " +service );
-        return 42; //exit code
-    }
 
+        //Quarkus.run(HelloWorldMain.class, args);
+        Quarkus.run(args);
+    }
 }
+
+*
+*
+* */

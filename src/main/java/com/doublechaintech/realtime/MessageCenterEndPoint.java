@@ -6,6 +6,7 @@ import org.jboss.resteasy.reactive.common.util.DateUtil;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -31,24 +32,37 @@ public class MessageCenterEndPoint {
     }*/
 
 
+    public static  String PUBLIC_CHANNEL="public";
+
     Map<String, Session> sessions = new ConcurrentHashMap<>();
     private static final Logger LOG = Logger.getLogger(ChannelService.class);
+
+
+    public String getSessionId(String username,Session session){
+        if(PUBLIC_CHANNEL.equals(username)){
+            return "public:"+session.getId();
+        }
+        return username;
+    }
+
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) {
-        sessions.put(username, session);
+        String internalId=username;
+
+        sessions.put(getSessionId(username,session), session);
         broadcast(username+" joined at " + DateUtil.formatDate(new Date(),"YYYY-MM-DD hh:mm:ss.SSS"));
     }
 
     @OnClose
     public void onClose(Session session, @PathParam("username") String username) {
-        sessions.remove(username);
-        broadcast("User " + username + " left");
+        sessions.remove(getSessionId(username,session));
+        broadcast("User " + getSessionId(username,session) + " left");
 
     }
 
     @OnError
     public void onError(Session session, @PathParam("username") String username, Throwable throwable) {
-        sessions.remove(username);
+        sessions.remove(getSessionId(username,session));
         broadcast("User " + username + " left on error: " + throwable);
     }
 
@@ -71,7 +85,9 @@ public class MessageCenterEndPoint {
                     return entry;
                 })
                 .map(entry -> entry.getValue()).forEach(session -> {
-
+                    if(!session.isOpen()){
+                        return;//not clean here, fine for now
+                    }
                     session.getAsyncRemote().sendText(message.toString(), result ->  {
                         if (result.getException() != null) {
                             LOG.error("Unable to send message: " + result.getException());
