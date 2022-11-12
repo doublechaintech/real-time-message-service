@@ -33,16 +33,16 @@ public class ReceivingService {
 
         if(!request.getSubscribers().isEmpty()){
             messageCenterEndPoint.multicast(request.getSubscribers(),request.getMessage());
-            return  MessagePostResponse.withMessage("sent to end points:" +String.join(", ", request.getSubscribers()));
+            return  MessagePostResponse.withMessage("sent to end points: " +String.join(",", request.getSubscribers()));
         }
 
+        if(channelManager.isDebugChannel(request.getChannelName())){
+            messageCenterEndPoint.broadcast(request.getMessage());
+            return  MessagePostResponse.withMessage("send to all!");
+        }
 
         List<String> endPoints = channelManager.getEndPointForChannel(request.getChannelName());
         LOG.error(channelManager.listSubscriptionText());
-        if(channelManager.isDebugChannel(request.getChannelName())){
-            messageCenterEndPoint.broadcast(request.getMessage());
-            return  MessagePostResponse.withMessage("send to broad cast");
-        }
         messageCenterEndPoint.multicast(endPoints,request.getMessage());
         return  MessagePostResponse.withMessage("sent to end points:" +String.join(", ", endPoints));
     }

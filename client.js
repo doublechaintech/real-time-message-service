@@ -24,5 +24,8 @@ client.on('connect', function(connection) {
 
 //client.connect('ws://192.168.1.9:9988/chat/x001', 'server time');
 //client.connect('ws://192.168.1.9:9988/message-center/x001');
-client.connect('wss://demo2.doublechaintech.com/message-center/x001');
+//client.connect('wss://demo2.doublechaintech.com/message-center/x001');
 //wss://demo2.doublechaintech.com/message-center/x001
+
+client.connect('ws://localhost:10000/message-center/x0000001');
+

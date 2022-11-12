@@ -40,10 +40,11 @@ public class ChannelManager {
         getChannelMap().put(channel.getName(),channel);
     }
     public Channel ensureChanel(String channelName){
+
         Channel channel=getChannelMap().get(channelName);
         //LOG.info("ensureChanel Channel"  + channelName);
         if(channel!=null){
-            LOG.info("exist Channel"  + channelName);
+            //LOG.info("exist Channel"  + channelName);
             return channel;
         }
         LOG.info("new Channel"  + channelName);
