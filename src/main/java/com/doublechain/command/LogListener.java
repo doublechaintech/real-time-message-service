@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
 import java.nio.charset.StandardCharsets;
 
 public class LogListener implements Runnable {
@@ -39,8 +43,23 @@ public class LogListener implements Runnable {
             codec(messageBuf,buf);
             MessagePostRequest request=new MessagePostRequest();
             request.setChannelName("_debug");
-            request.setMessage(new String(messageBuf, StandardCharsets.UTF_8));
-            receivingService.postMessage(request);
+
+            CharsetDecoder decoder =
+                    StandardCharsets.UTF_8.newDecoder();
+            try {
+                CharBuffer buffer = decoder.decode(
+                        ByteBuffer.wrap(messageBuf));
+                request.setMessage(buffer.toString());
+                receivingService.postMessage(request);
+            } catch (CharacterCodingException ex) {
+                LOG.error("Not able to decode the message: "+ex.getMessage());
+                LOG.error("The org message: "+new String(buf,0,packet.getLength()));
+            }
+
+
+
+
+
         }
     }
 
