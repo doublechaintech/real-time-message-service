@@ -17,8 +17,10 @@ public class QKMain implements QuarkusApplication {
 
     @Override
     public int run(String... args) throws Exception {
-        System.out.println("Hello World " +service );
-        new Thread(LogListener.withService(service)).start();
+
+        //new Thread(LogListener.withService(service)).start();
+        new Thread(MulticastListener.withService(service)).start();
+        //new Thread(MulticastSender.inst()).start();
         Quarkus.waitForExit();
         //System.out.println("find the service: " +service );
         return 0; //exit code
