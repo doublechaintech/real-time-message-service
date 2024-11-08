@@ -6,7 +6,9 @@ dev:
 
 docker:
 	quarkus build --native  --no-tests
-	docker build --no-cache -f src/main/docker/Dockerfile.native -t doublechaintech/real-time-message-service .
+	docker build --no-cache -f src/main/docker/Dockerfile.native -t golap2docker/realtime-message-service  .
+	#docker push golap2docker/realtime-message-service 
+
 
 run-docker:
 
