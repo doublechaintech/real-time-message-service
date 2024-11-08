@@ -1,5 +1,5 @@
-all:
-	quarkus build --native  --no-tests
+all: docker run-docker
+	echo "fine!"
 
 dev:
 	 ./gradlew --console=plain quarkusDev

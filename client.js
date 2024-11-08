@@ -18,7 +18,12 @@ client.on('connect', function(connection) {
     });
     
     connection.on('message', function(message) {
-        console.log("Current message on server is: '" +JSON.stringify( message) + "'");
+        //console.log("Current message on server is: '" +JSON.stringify( message) + "'");
+        if(message.utf8Data.indexOf("EN000")>=0){
+            console.log(message.utf8Data);
+        }
+        
+        
     });
 });
 
@@ -27,5 +32,6 @@ client.on('connect', function(connection) {
 //client.connect('wss://demo2.doublechaintech.com/message-center/x001');
 //wss://demo2.doublechaintech.com/message-center/x001
 
-client.connect('ws://localhost:10000/message-center/x0000001');
+//client.connect('ws://localhost:10000/message-center/x0000001');
+client.connect('ws://iotlog.doublechaintech.com/message-center/public');
 

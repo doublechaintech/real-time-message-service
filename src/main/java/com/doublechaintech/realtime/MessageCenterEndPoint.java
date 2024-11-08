@@ -44,35 +44,41 @@ public class MessageCenterEndPoint {
         }
         return username;
     }
+    public String getMaskedId(String username,Session session){
+        if(PUBLIC_CHANNEL.equals(username)){
+            return "public:"+session.getId();
+        }
+        if(username.length() < 4){
+            return "*****";
+        }
+        return "*****";
+    }
+
 
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) {
         String internalId=username;
 
         sessions.put(getSessionId(username,session), session);
-        broadcast(username+" joined at " + DateUtil.formatDate(new Date(),"YYYY-MM-DD hh:mm:ss.SSS"));
+        broadcast(getMaskedId(username,session)+" joined at " + DateUtil.formatDate(new Date(),"YYYY-MM-DD hh:mm:ss.SSS"));
     }
 
     @OnClose
     public void onClose(Session session, @PathParam("username") String username) {
         sessions.remove(getSessionId(username,session));
-        broadcast("User " + getSessionId(username,session) + " left");
+        broadcast("User " + getMaskedId(username,session) + " left");
 
     }
 
     @OnError
     public void onError(Session session, @PathParam("username") String username, Throwable throwable) {
         sessions.remove(getSessionId(username,session));
-        broadcast("User " + username + " left on error: " + throwable);
+        broadcast("User " + getMaskedId(username,session) + " left on error: " + throwable);
     }
 
     @OnMessage
     public void onMessage(String message, @PathParam("username") String username) {
-        if (message.equalsIgnoreCase("_ready_")) {
-            broadcast("User " + username + " joined");
-        } else {
-            broadcast(">> " + username + ": " + message);
-        }
+
     }
 
     public synchronized void  multicast(List<String> endPoints, Object message){

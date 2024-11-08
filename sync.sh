@@ -6,5 +6,5 @@
 
 #ssh -p 20000 quarkus@demo2.doublechaintech.com "cd ~/githome/real-time-message-service/ && rm -rf *"
 
-rsync -avz   -e "ssh -p 20000"    *  quarkus@demo2.doublechaintech.com:~/githome/real-time-message-service/
+rsync -avz   -e "ssh -p 20000"    *  quarkus@app.doublechaintech.com:~/githome/real-time-message-service/
 
